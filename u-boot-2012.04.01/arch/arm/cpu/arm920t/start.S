@@ -203,7 +203,7 @@ call_board_init_f:
 relocate_code:
 	mov	r4, r0	/* save addr_sp */
 	mov	r5, r1	/* save addr of gd */
-	mov	r6, r2	/* save addr of destination */
+	mov	r6, r2	/* save addr of destination  就是预留的uboot代码*/
 
 	/* Set up the stack						    */
 stack_setup:
