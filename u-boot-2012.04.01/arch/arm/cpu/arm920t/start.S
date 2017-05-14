@@ -169,9 +169,31 @@ copyex:
 
 	/* FCLK:HCLK:PCLK = 1:2:4 */
 	/* default FCLK is 120 MHz ! */
-	ldr	r0, =CLKDIVN
-	mov	r1, #3
-	str	r1, [r0]
+	/* 
+		ldr	r0, =CLKDIVN
+		mov	r1, #3
+		str	r1, [r0] 
+	*/
+	
+	/*2 set up the timer*/
+	ldr r0, =0x4c000014
+	mov r1, #0x03;            // FCLK:HCLK:PCLK=1:2:4, HDIVN=1,PDIVN=1
+	str r1, [r0]
+
+	/* 如果HDIVN非0，CPU的总线模式应该从“fast bus mode”变为“asynchronous bus mode” */
+	mrc	p15, 0, r1, c1, c0, 0		/* 读出控制寄存器 */ 
+	orr	r1, r1, #0xc0000000			/* 设置为“asynchronous bus mode” */
+	mcr	p15, 0, r1, c1, c0, 0		/* 写入控制寄存器 */
+
+#define S3C2440_MPLL_200MHZ     ((0x5c<<12)|(0x01<<4)|(0x02))
+// #define MEM_CTL_BASE    0x48000000
+
+	/* MPLLCON = S3C2440_MPLL_200MHZ */
+	ldr r0, =0x4c000004
+	ldr r1, =S3C2440_MPLL_200MHZ
+	str r1, [r0]
+
+
 #endif	/* CONFIG_S3C24X0 */
 
 	/*
@@ -209,22 +231,22 @@ relocate_code:
 stack_setup:
 	mov	sp, r4
 
-	adr	r0, _start
+	adr	r0, _start    //r0存放的就是代码的连接地址
 	cmp	r0, r6
 	beq	clear_bss		/* skip relocation */
 	mov	r1, r6			/* r1 <- scratch for copy_loop */
 	ldr	r3, _bss_start_ofs
 	add	r2, r0, r3		/* r2 <- source end address	    */
 
-copy_loop:
-	ldmia	r0!, {r9-r10}		/* copy from source address [r0]    */
-	stmia	r1!, {r9-r10}		/* copy to   target address [r1]    */
+copy_loop:  // r0会自己加8，r1 也是加8， r2 就间距
+	ldmia	r0!, {r9-r10}		/* copy from source address [r0] 从r0读数据到r9   */
+	stmia	r1!, {r9-r10}		/* copy to   target address [r1] 在存到R1 */
 	cmp	r0, r2			/* until source end address [r2]    */
 	blo	copy_loop
 
 #ifndef CONFIG_SPL_BUILD
 	/*
-	 * fix .rel.dyn relocations
+	 * fix .rel.dyn relocations lds文件链接地址都是0
 	 */
 	ldr	r0, _TEXT_BASE		/* r0 <- Text base */
 	sub	r9, r6, r0		/* r9 <- relocation offset */
@@ -240,7 +262,7 @@ fixloop:
 	ldr	r1, [r2, #4]
 	and	r7, r1, #0xff
 	cmp	r7, #23			/* relative fixup? */
-	beq	fixrel
+	beq	fixrel       // 相等 就执行fixrel
 	cmp	r7, #2			/* absolute fixup? */
 	beq	fixabs
 	/* ignore unknown type of fixup */

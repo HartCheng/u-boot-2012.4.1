@@ -1,0 +1,14 @@
+---- lowlevel_init Matches (13 in 12 files) ----
+Ehci-hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\host):int usb_lowlevel_init(void)
+Isp116x-hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\host):int usb_lowlevel_init(void)
+Musb_hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\musb):int usb_lowlevel_init(void)
+Mv_udc.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\gadget):		usb_lowlevel_init();
+Mv_udc.h (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\include\usb):extern int usb_lowlevel_init(void);
+Ohci-hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\host):int usb_lowlevel_init(void)
+R8a66597-hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\host):int usb_lowlevel_init(void)
+Sl811-hcd.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\drivers\usb\host):int usb_lowlevel_init(void)
+start.S (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\arch\arm\cpu\arm920t):	 * find a lowlevel_init.S in your board directory.
+start.S (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\arch\arm\cpu\arm920t):	bl	lowlevel_init
+Usb.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\common):	result = usb_lowlevel_init();
+Usb.h (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\include):int usb_lowlevel_init(void);
+Usb_ohci.c (d:\baiduyundownload\code_test\source code\u-boot-2012.04.01\u-boot-2012.04.01\arch\arm\cpu\arm920t\s3c24x0):int usb_lowlevel_init(void)

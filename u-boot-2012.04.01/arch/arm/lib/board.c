@@ -275,7 +275,7 @@ void board_init_f(ulong bootflag)
 
 	memset((void *)gd, 0, sizeof(gd_t));
 
-	gd->mon_len = _bss_end_ofs;
+	gd->mon_len = _bss_end_ofs; // uboot的地址
 #ifdef CONFIG_OF_EMBED
 	/* Get a pointer to the FDT */
 	gd->fdt_blob = _binary_dt_dtb_start;
@@ -369,7 +369,7 @@ void board_init_f(ulong bootflag)
 	 * reserve memory for U-Boot code, data & bss
 	 * round down to next 4 kB limit
 	 */
-	addr -= gd->mon_len;
+	addr -= gd->mon_len; //这个就是uboot在sdram上面的地址。
 	addr &= ~(4096 - 1); //addr 就是留个uboot的代码
 
 	debug("Reserving %ldk for U-Boot at: %08lx\n", gd->mon_len >> 10, addr);
